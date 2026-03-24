@@ -231,6 +231,17 @@ void PreviewInFfplay(MediaItem *item){
 }
 
 void ProcessItem(AppState *state, MediaItem *item) {
+    if (item->isMarkedForDeletion) {
+        if (remove(item->fullPath) == 0) {
+            AddLog(state, TextFormat("Deleted: %s", item->fileName), DELETE_COLOR);
+            item->isMarkedForDeletion = false;
+            item->isDeleted = true;
+        } else {
+            AddLog(state, TextFormat("Error deleting: %s", item->fileName), RED);
+        }
+        return;
+    }
+
     if (item->skip || item->isDeleted) {
         AddLog(state, TextFormat("Skipped: %s", item->fileName), GRAY);
         return;
@@ -308,8 +319,7 @@ void ProcessItem(AppState *state, MediaItem *item) {
 
 void DeleteOriginal(AppState *state, MediaItem *item) {
     if (item->isDeleted) return;
-    if (remove(item->fullPath) == 0) {
-        AddLog(state, TextFormat("Deleted: %s", item->fileName), DELETE_COLOR);
-        item->isDeleted = true;
-    } else AddLog(state, "Error deleting file", RED);
+    item->isMarkedForDeletion = true;
+    item->isDeleted = true;
+    AddLog(state, TextFormat("Marked for delete: %s", item->fileName), DELETE_COLOR);
 }

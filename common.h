@@ -17,7 +17,7 @@
 #include <mpv/render.h>
 
 #define MAX_PATH_LEN    4096
-#define SAVE_VERSION    6
+#define SAVE_VERSION    7
 #define STATE_FILENAME  ".cropper.dat"
 #define OUTPUT_DIR_NAME "processed"
 #define MAX_LOGS        100
@@ -38,7 +38,7 @@ typedef struct {
     Rectangle cropRect;
     float     trimStart, trimEnd;
     int       rotation;
-    bool      skip, touched, isProcessed, isDeleted;
+    bool      skip, touched, isProcessed, isDeleted, isMarkedForDeletion;
 } MediaItem;
 
 typedef struct {
