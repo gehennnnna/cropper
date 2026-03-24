@@ -260,12 +260,15 @@ int main(int argc,char *argv[]){
                     state.isDraggingTime=state.isDraggingTrimStart=state.isDraggingTrimEnd=false;
                 }
                 if(state.isDraggingTrimStart||state.isDraggingTrimEnd||state.isDraggingTime){
-                    cur->touched=true;cur->skip=false;
                     float d=GetMouseDelta().x/ppSec;
-                    if(state.isDraggingTrimStart)
+                    if(state.isDraggingTrimStart){
                         cur->trimStart=Clamp(roundf((cur->trimStart+d)*fps)/fps,0,cur->trimEnd-1.f/fps);
-                    if(state.isDraggingTrimEnd)
+                        cur->touched=true;cur->skip=false;
+                    }
+                    if(state.isDraggingTrimEnd){
                         cur->trimEnd=Clamp(roundf((cur->trimEnd+d)*fps)/fps,cur->trimStart+1.f/fps,cur->duration);
+                        cur->touched=true;cur->skip=false;
+                    }
                     if(state.isDraggingTime){
                         state.currentVideoTime=Clamp(state.currentVideoTime+d,0,cur->duration);
                         // Fast keyframe seek \u2014 instant anywhere in the video
