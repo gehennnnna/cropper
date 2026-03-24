@@ -242,7 +242,7 @@ void ProcessItem(AppState *state, MediaItem *item) {
         return;
     }
 
-    if (item->skip || item->isDeleted) {
+    if (item->skip || item->isDeleted || (!item->touched && !item->isMarkedForDeletion)) {
         AddLog(state, TextFormat("Skipped: %s", item->fileName), GRAY);
         return;
     }
